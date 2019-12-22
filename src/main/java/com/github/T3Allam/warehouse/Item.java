@@ -11,4 +11,8 @@ public class Item {
         this.sku = sku;
         this.price = price;
     }
+
+    public String getSku() {
+        return sku;
+    }
 }
