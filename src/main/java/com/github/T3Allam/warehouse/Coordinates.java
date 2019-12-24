@@ -17,17 +17,16 @@ public class Coordinates {
     public double[] getCoordinates (String address) {
         Logger logger = LoggerFactory.getLogger(Coordinates.class);
         BasicConfigurator.configure();
-        String apiKey = "e407501ceb0449908b12df2a1f554363";
+        String apiKey = "";
         JOpenCageGeocoder jOpenCageGeocoder = new JOpenCageGeocoder(apiKey);
         JOpenCageForwardRequest request = new JOpenCageForwardRequest(address);
         request.setLimit(1);
         request.setNoAnnotations(true);
         JOpenCageResponse response = jOpenCageGeocoder.forward(request);
         JOpenCageLatLng firstResultLatLng = response.getFirstPosition();
-        longitude = firstResultLatLng.getLat().doubleValue();
-        latitude = firstResultLatLng.getLng().doubleValue();
+        this.longitude = firstResultLatLng.getLat().doubleValue();
+        this.latitude = firstResultLatLng.getLng().doubleValue();
         double[] geolocation = {longitude, latitude};
-        System.out.println(geolocation);
         return geolocation;
     }
 }

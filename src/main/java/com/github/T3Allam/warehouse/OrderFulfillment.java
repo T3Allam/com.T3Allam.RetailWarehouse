@@ -1,8 +1,9 @@
 package com.github.T3Allam.warehouse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class OrderFulfillment{
+public class OrderFulfillment implements IOrder{
     private ArrayList<Warehouse> warehouses;
     final int R = 6371;
 
@@ -10,11 +11,19 @@ public class OrderFulfillment{
         this.warehouses = new ArrayList<>();
     }
 
+    public ArrayList<Warehouse> getWarehouses() {
+        return warehouses;
+    }
+
+    public void addWarehouse(Warehouse warehouse) {
+        this.warehouses.add(warehouse);
+    }
+
     public ArrayList<Warehouse> getSortedWarehouses (Order order) {
         //get address of order
-        String orderAddress = order.getAddress();
+//        String orderAddress = order.getAddress();
         //get coordinates of address
-        double[] coordinates = order.getCoordinates(orderAddress);
+        double[] coordinates = order.getCoordinates();
         //find difference between two coordinates
         double orderLat = coordinates[0];
         double orderLon = coordinates[1];
@@ -33,9 +42,9 @@ public class OrderFulfillment{
             double latDifferenceRadians = latDifference * (Math.PI/180);
             double lonDifferenceRadians = lonDifference * (Math.PI/180);
             //Calculating distance
-            Double a = Math.sin(latDifferenceRadians / 2) * Math.sin(latDifferenceRadians / 2) + Math.cos(warehouseLat * (Math.PI/180)) * Math.cos(orderLat* (Math.PI/180)) * Math.sin(lonDifferenceRadians / 2) * Math.sin(lonDifferenceRadians / 2);
-            Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            Double distance = R * c;
+            double a = Math.sin(latDifferenceRadians / 2) * Math.sin(latDifferenceRadians / 2) + Math.cos(warehouseLat * (Math.PI/180)) * Math.cos(orderLat* (Math.PI/180)) * Math.sin(lonDifferenceRadians / 2) * Math.sin(lonDifferenceRadians / 2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            double distance = R * c;
             System.out.println(distance);
             //Populating Arraylist of sorted
             if (sortedDistance.isEmpty()) {
@@ -54,13 +63,14 @@ public class OrderFulfillment{
                 }
             }
         }
+        System.out.println(sortedWarehouses.toString());
+        for (Warehouse warehouse: sortedWarehouses)
+            System.out.println(warehouse + " " + warehouse.getName());
         return sortedWarehouses;
     }
 
     public void fulfillOrder(Order order) {
-
         ArrayList<Warehouse> sortedWarehouses = getSortedWarehouses(order);
-
         //loop though customer order
         order.getItemList().forEach((k,v) -> {
             //check if item is in stock
@@ -73,7 +83,7 @@ public class OrderFulfillment{
                     warehouse.fulfillOrder(k, v);
                 } else if (numInStock > v) {
                     System.out.println("In stock.");
-                    warehouse.fulfillOrder(k,v);
+                    warehouse.fulfillOrder(k, v);
                 }
             }
         });
