@@ -38,10 +38,7 @@ public class Warehouse{
         return 0;
     }
 
-    public void fulfillOrder(Item k, int v) {
-        int currentInventory = this.getStock().get(k);
-        this.getStock().replace(k, currentInventory -v);
-        System.out.println("Order for product sku:" + this.getStock().get(k.getSku()) + " and has name " + this.getStock().get(k.getName())
-                + " has been fulfilled.");
+    public void fulfillOrder(Item k, int v) { ;
+        System.out.println(v + " of the product " + k.getName() + " have been shipped.");
     }
 }

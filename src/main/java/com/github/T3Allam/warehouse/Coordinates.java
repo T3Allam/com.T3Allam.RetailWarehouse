@@ -6,8 +6,8 @@ import com.byteowls.jopencage.model.JOpenCageLatLng;
 import com.byteowls.jopencage.model.JOpenCageResponse;
 import org.apache.log4j.BasicConfigurator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 
 public class Coordinates {
@@ -15,7 +15,7 @@ public class Coordinates {
     private double longitude;
 
     public double[] getCoordinates (String address) {
-        Logger logger = LoggerFactory.getLogger(Coordinates.class);
+//        Logger logger = LoggerFactory.getLogger(Coordinates.class);
         BasicConfigurator.configure();
         String apiKey = "";
         JOpenCageGeocoder jOpenCageGeocoder = new JOpenCageGeocoder(apiKey);

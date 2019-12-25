@@ -1,7 +1,7 @@
 package com.github.T3Allam.warehouse;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+//import java.util.Set;
 
 public class OrderFulfillment implements IOrder{
     private ArrayList<Warehouse> warehouses;
@@ -14,6 +14,17 @@ public class OrderFulfillment implements IOrder{
     public ArrayList<Warehouse> getWarehouses() {
         return warehouses;
     }
+
+//    public void displayWarehouse() {
+//        for (Warehouse warehouse: warehouses) {
+//            System.out.println(warehouse.getName());
+//            Set<Item> setOfWarehouses = warehouse.getStock().keySet();
+//            for (Item item: setOfWarehouses)
+//                System.out.println(item.getName()+" " + warehouse.getStock().get(item));
+//        }
+//        System.out.println("************************************************");
+//
+//    }
 
     public void addWarehouse(Warehouse warehouse) {
         this.warehouses.add(warehouse);
@@ -45,7 +56,7 @@ public class OrderFulfillment implements IOrder{
             double a = Math.sin(latDifferenceRadians / 2) * Math.sin(latDifferenceRadians / 2) + Math.cos(warehouseLat * (Math.PI/180)) * Math.cos(orderLat* (Math.PI/180)) * Math.sin(lonDifferenceRadians / 2) * Math.sin(lonDifferenceRadians / 2);
             double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             double distance = R * c;
-            System.out.println(distance);
+//            System.out.println(distance);
             //Populating Arraylist of sorted
             if (sortedDistance.isEmpty()) {
                 sortedDistance.add(distance);
@@ -63,9 +74,6 @@ public class OrderFulfillment implements IOrder{
                 }
             }
         }
-        System.out.println(sortedWarehouses.toString());
-        for (Warehouse warehouse: sortedWarehouses)
-            System.out.println(warehouse + " " + warehouse.getName());
         return sortedWarehouses;
     }
 
@@ -75,17 +83,32 @@ public class OrderFulfillment implements IOrder{
         order.getItemList().forEach((k,v) -> {
             //check if item is in stock
             for(Warehouse warehouse: sortedWarehouses) {
+                if (v==0) {
+                    break;
+                }
                 int numInStock = warehouse.currentInventory(k);
                 if (numInStock == 0 ) {
-                    System.out.println("Out of Stock");
+                    System.out.println(k.getName() + " is out of stock in warehouse: " + warehouse.getName());
+                    continue;
                 } else if (numInStock < v) {
-                    System.out.println("Partial fulfillment. Amount required < amount in stock");
+                    System.out.println("Partial fulfillment from warehouse: " + warehouse.getName());
+                    warehouse.fulfillOrder(k, numInStock);
+                    warehouse.getStock().replace(k, 0);
+
+                    v = v - numInStock;
+                    continue;
+                } else if (numInStock >= v) {
+                    System.out.println("In stock. Fulfilled from warehouse: " + warehouse.getName());
                     warehouse.fulfillOrder(k, v);
-                } else if (numInStock > v) {
-                    System.out.println("In stock.");
-                    warehouse.fulfillOrder(k, v);
+                    int currentInventory = warehouse.getStock().get(k);
+                    warehouse.getStock().replace(k, currentInventory -v);
+                    v = 0;
+                    break;
                 }
             }
+            if (v>0)
+                System.out.println("Not enough stock to fulfill order of product " + k.getName() + ". Quantity unfulfilled: " + v);
+            System.out.println("********************************************************");
         });
     }
 }

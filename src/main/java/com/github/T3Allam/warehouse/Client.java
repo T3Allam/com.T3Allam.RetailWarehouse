@@ -1,6 +1,6 @@
 package com.github.T3Allam.warehouse;
 
-import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class Client {
 
@@ -38,36 +38,42 @@ public class Client {
         w5.getStock().put(benz, 2);
         w5.getStock().put(audi, 3);
 
-        //Testing
-//        System.out.println(w3.currentInventory(subaru));
-        /* ********************************** */
-
         //Create an order with 3 items - Order Class
-        String address = "685 Markham St, Toronto, ON M6G2M2";
-        String name = "reprisk";
+        String address = "792 Bathurst St, Toronto, ON M6G2M2";
+        String name = "Ziggy";
         Order o1 = new Order(address, name);
-//        System.out.println("Product: " + bmw + " " + bmw.getName());
-//        System.out.println("Product: " + benz + " " + benz.getName());
-//        System.out.println("Product: " + audi + " " + audi.getName());
-//        System.out.println("Product: " + tesla + " " + tesla.getName());
-//        System.out.println("Product: " + subaru + " " + subaru.getName());
-
-        o1.addItem(bmw, 2);
         o1.addItem(benz,3);
-        o1.replaceItem(bmw, 4);
+        o1.addItem(bmw, 4);
         o1.addItem(tesla, 4);
-//        System.out.println(o1.getItemList().toString());
-//        System.out.println(Arrays.toString(o1.getCoordinates()));
+
 
         //Orderfulfillment
+        //Order 1
         OrderFulfillment newOrder = new OrderFulfillment();
         newOrder.addWarehouse(w1);
         newOrder.addWarehouse(w2);
         newOrder.addWarehouse(w3);
         newOrder.addWarehouse(w4);
         newOrder.addWarehouse(w5);
+        newOrder.fulfillOrder(o1);
+        try {
+            TimeUnit.SECONDS.sleep(4);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        newOrder.getSortedWarehouses(o1);
-
+        //Order 2
+        Order o2 = new Order("10 Lower Jarvis St, Toronto, ON M5E 1Z2", "Starbucks");
+        o2.addItem(audi,3);
+        o2.addItem(bmw, 4);
+        o2.addItem(subaru, 4);
+        o2.addItem(tesla, 4);
+        OrderFulfillment newOrder2 = new OrderFulfillment();
+        newOrder2.addWarehouse(w1);
+        newOrder2.addWarehouse(w2);
+        newOrder2.addWarehouse(w3);
+        newOrder2.addWarehouse(w4);
+        newOrder2.addWarehouse(w5);
+        newOrder2.fulfillOrder(o2);
     }
 }
