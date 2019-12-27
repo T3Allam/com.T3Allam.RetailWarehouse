@@ -49,7 +49,7 @@ public class Client {
 
         //Orderfulfillment
         //Order 1
-        OrderFulfillment newOrder = new OrderFulfillment();
+        IOrder newOrder = new OrderFulfillment();
         newOrder.addWarehouse(w1);
         newOrder.addWarehouse(w2);
         newOrder.addWarehouse(w3);
@@ -62,13 +62,15 @@ public class Client {
             e.printStackTrace();
         }
 
-        //Order 2
+        //Creating order #2
         Order o2 = new Order("10 Lower Jarvis St, Toronto, ON M5E 1Z2", "Starbucks");
         o2.addItem(audi,3);
         o2.addItem(bmw, 4);
         o2.addItem(subaru, 4);
         o2.addItem(tesla, 4);
-        OrderFulfillment newOrder2 = new OrderFulfillment();
+
+        //Fulfilling Order
+        IOrder newOrder2 = new OrderFulfillment();
         newOrder2.addWarehouse(w1);
         newOrder2.addWarehouse(w2);
         newOrder2.addWarehouse(w3);
