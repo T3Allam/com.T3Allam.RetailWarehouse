@@ -1,18 +1,17 @@
-package com.github.T3Allam.warehouse;
+package com.github.T3Allam.warehouse.orders;
 
+import com.github.T3Allam.warehouse.Item;
 import java.util.Hashtable;
 
 public class Order {
 
     private Hashtable<Item, Integer> itemList;
     private String address;
-    private Coordinates coordinates;
     private String customerName;
 
 
     public Order (String address, String name) {
         this.itemList = new Hashtable<>();
-        this.coordinates = new Coordinates();
         this.address = address;
         this.customerName = name;
     }
@@ -23,10 +22,6 @@ public class Order {
 
     public String getAddress(){
         return this.address;
-    }
-
-    public double[] getCoordinates(){
-        return coordinates.getCoordinates(this.address);
     }
 
     public void addItem(Item item, Integer n) {

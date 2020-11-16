@@ -1,22 +1,23 @@
 package com.github.T3Allam.warehouse;
 
 
-public class Item {
-    String name;
-    String sku;
-    double price;
+import com.github.T3Allam.warehouse.helpers.NumberGenerator;
 
-    public Item(String name, String sku, double price){
+public class Item {
+    private String name;
+    private int id;
+    private double price;
+
+    public Item(String name){
         this.name = name;
-        this.sku = sku;
-        this.price = price;
+        this.id = NumberGenerator.generateUniqueItemId();
     }
 
     public String getName() {
         return name;
     }
 
-    public String getSku() {
-        return sku;
+    public int getId() {
+        return this.id;
     }
 }

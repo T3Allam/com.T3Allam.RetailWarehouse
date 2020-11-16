@@ -1,16 +1,19 @@
 package com.github.T3Allam.warehouse;
 
-import java.util.concurrent.TimeUnit;
+import com.github.T3Allam.warehouse.orders.Order;
+import com.github.T3Allam.warehouse.proxy.OrderFulfillment;
+import com.github.T3Allam.warehouse.subjectclass.Warehouse;
 
 public class Client {
 
     public static void main(String[] args) {
+
         //Create 5 Items - Item Class
-        Item bmw = new Item("bmw", "1",5.22);
-        Item benz = new Item("benz", "2", 6.44);
-        Item audi = new Item("audi", "3", 4.74);
-        Item tesla = new Item("tesla", "4", 5.34);
-        Item subaru = new Item("subaru", "5", 4.34);
+        Item bmw = new Item("bmw");
+        Item benz = new Item("benz");
+        Item audi = new Item("audi");
+        Item tesla = new Item("tesla");
+        Item subaru = new Item("subaru");
         //Create 6 Warehouses & stocking up - Warehouse Class
         Warehouse w1 = new Warehouse("Toronto Christmas Market", "373 Front St E, Toronto, ON M5A 1G4");
         w1.getStock().put(bmw, 4);
@@ -18,6 +21,8 @@ public class Client {
         w1.getStock().put(audi, 3);
         w1.getStock().put(tesla, 1);
         w1.getStock().put(subaru, 5);
+
+        w1.displayStock();
 
         Warehouse w2 = new Warehouse("Nathan Phillips Square", "100 Queen St W, Toronto, ON M5H 2N1");
         w2.getStock().put(bmw, 4);
@@ -39,43 +44,58 @@ public class Client {
         w5.getStock().put(audi, 3);
 
         //Create an order with 3 items - Order Class
-        String address = "792 Bathurst St, Toronto, ON M6G2M2";
-        String name = "Ziggy";
-        Order o1 = new Order(address, name);
-        o1.addItem(benz,3);
-        o1.addItem(bmw, 4);
-        o1.addItem(tesla, 4);
+//        long startTime = System.currentTimeMillis();
+//        String address = "10 Toronto St, Toronto, ON, M5C 2B7";
+//        String name = "Ziggy";
+//        Order o1 = new Order(address, name);
+//        o1.addItem(benz,5);
+//        o1.addItem(bmw, 7);
+//        o1.addItem(tesla, 6);
+//        o1.addItem(subaru, 9);
 
 
         //Orderfulfillment
         //Order 1
-        IOrder newOrder = new OrderFulfillment();
-        newOrder.addWarehouse(w1);
-        newOrder.addWarehouse(w2);
-        newOrder.addWarehouse(w3);
-        newOrder.addWarehouse(w4);
-        newOrder.addWarehouse(w5);
-        newOrder.fulfillOrder(o1);
-        try {
-            TimeUnit.SECONDS.sleep(4);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        OrderFulfillment newOrder = new OrderFulfillment();
+//
+//        newOrder.addWarehouse(w1);
+//        newOrder.addWarehouse(w2);
+//        newOrder.addWarehouse(w3);
+//        newOrder.addWarehouse(w4);
+//        newOrder.addWarehouse(w5);
+//
 
-        //Creating order #2
-        Order o2 = new Order("10 Lower Jarvis St, Toronto, ON M5E 1Z2", "Starbucks");
-        o2.addItem(audi,3);
-        o2.addItem(bmw, 4);
-        o2.addItem(subaru, 4);
-        o2.addItem(tesla, 4);
+//        newOrder.fulfillOrder(o1);
+//        thread1.start();
+//        try {
+//            TimeUnit.SECONDS.sleep(4);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        long endTime = System.currentTimeMillis();
+//
+//        long duration  = endTime - startTime;
+//        System.out.println(String.valueOf(duration));
 
-        //Fulfilling Order
-        IOrder newOrder2 = new OrderFulfillment();
-        newOrder2.addWarehouse(w1);
-        newOrder2.addWarehouse(w2);
-        newOrder2.addWarehouse(w3);
-        newOrder2.addWarehouse(w4);
-        newOrder2.addWarehouse(w5);
-        newOrder2.fulfillOrder(o2);
+//        Creating order #2
+//        Order o2 = new Order("545 King St W, Toronto, ON, M5V 1M1", "Starbucks");
+//        o2.addItem(benz,3);
+//        o2.addItem(bmw, 5);
+//        o2.addItem(tesla, 2);
+//        o2.addItem(subaru, 4);
+//
+//        //Fulfilling Order
+//        OrderFulfillment newOrder2 = new OrderFulfillment();
+//        newOrder2.addWarehouse(w1);
+//        newOrder2.addWarehouse(w2);
+//        newOrder2.addWarehouse(w3);
+//        newOrder2.addWarehouse(w4);
+//        newOrder2.addWarehouse(w5);
+//        newOrder.displayWarehouse();
+//
+//        newOrder.fulfillOrder(o1);
+//        newOrder2.fulfillOrder(o2);
+
+//        newOrder.displayWarehouse();
     }
 }
