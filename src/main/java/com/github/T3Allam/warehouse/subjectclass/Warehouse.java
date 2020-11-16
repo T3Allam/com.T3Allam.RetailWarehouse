@@ -6,13 +6,13 @@ import java.util.Hashtable;
 
 public class Warehouse {
     private String name;
-    private static String address;
+    private String address;
     private Hashtable<Item, Integer> stock;
 
     public Warehouse(String name, String address){
         this.stock = new Hashtable<>();
         this.name = name;
-        Warehouse.address = address;
+        this.address = address;
     }
 
     public String getAddress() {
@@ -33,7 +33,7 @@ public class Warehouse {
     }
 
     public int currentInventory(Item item) {
-        return this.getStock().getOrDefault(item, 0);
+        return this.getStock().get(item);
     }
 
     public void fulfillOrder(Item item, int stock) { ;
