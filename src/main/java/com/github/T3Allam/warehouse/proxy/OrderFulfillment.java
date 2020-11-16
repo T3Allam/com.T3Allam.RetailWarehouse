@@ -12,15 +12,14 @@ import java.util.*;
     Adds all warehouses within the geographical area
     Warehouses are sorted based on distance from order's address
     Partial orders are allowed e.g Order requires 5 keyboards. If closest warehouse has 3 keyboards then partial order of 3 keyboards will be delivered. Remaining two will searched for in next warehouses
-    I understand there are complexities in a real world application such as competition for shared resources (items in this case) and necessity for thread safety
+    I understand there are complexities in a real world application such as competition for shared resources (items in this case)
   */
 
 public class OrderFulfillment {
     private List<Warehouse> warehouses;
     private Map<Warehouse, Double> warehousesDistances;
     private Coordinates coordinates;
-    //earth radius - we need this to calculate distances
-    final int R = 6371;
+    final int R = 6371; //earth radius - we need this to calculate distances
     Order order;
 
     public OrderFulfillment(Order order) {
@@ -37,15 +36,12 @@ public class OrderFulfillment {
     //populating value (distance from order address) in warehouses
     private void populateDistance() {
         for (Warehouse warehouse : warehouses) {
-//            System.out.println(warehouse.getName() + "  " + warehouse.getAddress()+ "   " + order.getAddress());
-            //Calculating distance between warehouse and order's address
             double distance = getDistance(coordinates.getCoordinates(order.getAddress()), coordinates.getCoordinates(warehouse.getAddress()));
-            System.out.println();
             warehousesDistances.put(warehouse, distance);
         }
     }
 
-    //sort hashmap of warehouse, distance [Source of code for this method: geeksforgeeks.org]
+    //sort hashmap of warehouse distance
     private HashMap<Warehouse, Double> getSortedWarehouseDistance () {
         List<Map.Entry<Warehouse, Double> > list = new LinkedList<>(warehousesDistances.entrySet());
         Collections.sort(list, Comparator.comparing(Map.Entry::getValue));
@@ -77,13 +73,12 @@ public class OrderFulfillment {
         order.getItemList().forEach((item,quantity) -> {
             //traversing through warehouse - warehouse with closest proximity first
             for(Map.Entry<Warehouse, Double> m: sortedWarehouseDistances.entrySet()) {
-                System.out.println("Quantity: " + quantity);
-                //exit loop if order fullfilled for item
+                //exit loop if order fullfilled
                 if (quantity==0) {
                     break;
                 }
                 int numInStock=0;
-                //checking stock of current item - corner case where warehouse does not have this item registered
+                //checking for nullpointer exception where warehouse does not have this item registered
                 try {
                     numInStock = m.getKey().currentInventory(item);
                 } catch (Exception e ) {
@@ -91,27 +86,21 @@ public class OrderFulfillment {
                 }
                 //case 1: item not in stock
                 if (numInStock == 0 ) {
-                    System.out.println("Order: " + order+ "  " + item.getName() + " is out of stock in warehouse: " + m.getKey().getName() + " or item not registered at warehouse");
                     continue;
                     //case 2: quantity required larger than what is in stock - partial fulfillment
                 } else if (numInStock < quantity) {
-                    System.out.println("Order ID: " + order.getId()+ "  " + "Partial fulfillment from warehouse: " + m.getKey().getName());
                     m.getKey().fulfillOrder(item, numInStock);
                     //updating what remains of partially fulfilled order for this type of item
                     quantity = quantity - numInStock;
-                    System.out.println("Updated invesntory " + m.getKey().currentInventory(item));
-                    System.out.println("Remaining q " + quantity);
                     continue;
                     //case 3: warehouse can fullfil this order completely
                 } else if (numInStock >= quantity) {
-                    System.out.println("Order ID: " + order.getId()+ "  " + "In stock. Fulfilled from warehouse: " +  m.getKey().getName());
                     m.getKey().fulfillOrder(item, quantity);
-                    System.out.println("Updated invesntory " + m.getKey().currentInventory(item));
                     quantity=0;
-                    System.out.print("Remaining q " + quantity);
                     break;
                 }
             }
+            //Notifying customer incase part of order has not been fulfilled
             if (quantity>0)
                 System.out.println("Not enough stock to fulfill order of product " + item.getName() + ". Quantity unfulfilled: " + quantity);
         });
